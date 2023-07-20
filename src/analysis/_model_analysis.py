@@ -1,32 +1,26 @@
 import os
+from typing import (
+    Any,
+    Dict
+)
 
 
 def analyze_model(
-        model,
-        title='model name',
-        X_train=X_train,
-        X_valid=X_valid,
-        X_test=X_test,
-        y_train=y_train,
-        y_valid=y_valid,
-        y_test=y_test,
-        X_tot=X_tot,
-        y_tot=y_tot,
-        cv=5,
-        reshape=False,
-        william_plot=True,
-        residualplot=True,
-        relative_error=True,
-        Y_Random=False,
-        Learning_curve=True
-):
+    model,
+    x_train,
+    x_validation,
+    x_bt,
+    y_train,
+    y_validation,
+    y_bt,
+    x_train_all,
+    y_train_all,
+    title='QSRR Model'
+) -> Dict[str, Any]:
 
-    # calculate y prediction for train and validation Data
-    # train prdiction
-    y_cal = model.predict(X_train)
-
-    # validation
-    y_pred = model.predict(X_valid)
+    # Predictions
+    _y_train_hat = model.predict(x_train)
+    _y_validation_hat = model.predict(x_validation)
 
     # predict
     y_blindtest = model.predict(X_test)
@@ -73,65 +67,7 @@ def analyze_model(
     print(f'r2_test: {r2_model_test:.3f}')
     print(f"RMSE_test: {rmse_model_test:.3f} min")
     print("-" * 80)
-    ############################## scatter plot ###############################
-    #  Plot scatter predicted and experiment data
-    #  scatter plot of results
-    plt.figure(figsize=(8, 6))
-    plt.subplots_adjust(hspace=0.5, wspace=0.7)
-    # fig.tight_layout(pad=5.0)                       # Finalize and render the figure
-    ax1 = plt.subplot(1, 4, (1, 3))
 
-    # colors
-    train_color = 'dodgerblue'
-    valid_color = 'darkorange'
-    test_color = 'mediumseagreen'
-    y_random_color = 'dodgerblue'
-
-    # plot train
-    ax1.scatter(y_train, y_cal, c=train_color, marker="o", alpha=0.8, edgecolors='black', linewidths=0.5)
-
-    # plot valid
-    ax1.scatter(y_valid, y_pred, c=valid_color, marker="^", alpha=0.8, edgecolors='black', linewidths=0.5)
-
-    # plot test
-    ax1.scatter(y_test, y_blindtest, facecolor=test_color, marker="s", alpha=0.5, edgecolors='black', linewidths=0.5)
-
-    # draw 1:1 line
-    ax1.plot(y_train, y_train, c='black', alpha=0.8, linewidth=1)  # identity line
-
-    # legend
-    ax1.legend(('Train', 'Validation', 'Test', '1:1 line'), loc='best')
-
-    # x and y label
-    ax1.set_xlabel("$tR_{Experiment}$")
-    ax1.set_ylabel("$tR_{Predicted}$")
-    # ax1.set_title(f"\n{title} model") #tR Experiment - tR Prediction for
-
-    ###############################    Relative Error    ####################################
-    if relative_error:
-        # Relative Error (%) -Boxplot
-        error_test = (abs(y_test - y_blindtest.ravel()) / y_test) * 100  # calculationRelative Error (%)
-
-        ax_box = ax1.inset_axes([0.7, 0.05, 0.4, 0.4])
-
-        box = ax_box.boxplot(error_test, labels=[''], showfliers=False, patch_artist=True, widths=0.1, )
-        box['boxes'][0].set(color='black', linewidth=1, facecolor=test_color, alpha=0.8)
-
-        # remove spines
-        ax_box.spines["top"].set_visible(False)
-        ax_box.spines["right"].set_visible(False)
-        ax_box.spines["bottom"].set_visible(False)
-        # make y axis closer to the box
-        ax_box.spines['left'].set_position(('axes', 0.3))
-
-        # change background color to invisible
-        ax_box.set_facecolor('none')
-        # x and y label
-        ax_box.set_ylabel("Relative Error (%)", fontsize=14)
-        # plt.title("")
-        plt.grid(False)
-        plt.savefig(f'{out_path}/test.svg', dpi=300, bbox_inches='tight', format='svg')
-        plt.show()
     ###############################    Residual_plot    ####################################
     if residualplot:
         # Calculate the residuals for train data
