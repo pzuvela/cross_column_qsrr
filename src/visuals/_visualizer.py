@@ -155,13 +155,13 @@ class Visualizer:
             np.min(_y_all), np.max(_y_all)
         ]
 
-        ax.plot(lims, lims, 'k--', alpha=0.75, zorder=0)
+        ax.plot(lims, lims, 'b--', alpha=0.75, zorder=0)
         ax.set_aspect('equal')
         ax.set_xlim(lims)
         ax.set_ylim(lims)
 
         ax.legend(
-            ('Training Set', 'Validation Set', 'BT Set', '1:1 Line'),
+            ('1:1 Line', 'Training Set', 'Validation Set', 'BT Set'),
             loc='best'
         )
 
@@ -340,13 +340,15 @@ class Visualizer:
             linewidths=0.5
         )
 
-        # draw warning limits
+        ax.legend(('Train', 'Validation', 'Test'), loc=(0.7, 0.8))
+
+        # Draw warning limits
         ax.axhline(3, ls=":", color="tomato", lw=1.5)
         ax.axhline(-3, ls=":", color="tomato", lw=1.5)
         ax.axvline(hat_star, ls=":", color="tomato", lw=1.5)
 
         h_s = f'h* = {hat_star:.2f}'  # h*
-        ax.text(hat_star - 0.025, -2.5, h_s, ha='left', va='top', fontsize=12)
+        ax.text(hat_star - 0.05, -2.5, h_s, ha='left', va='top', fontsize=12)
 
         for _i, (_res, _hat) in enumerate(
             zip(
@@ -356,8 +358,6 @@ class Visualizer:
         ):
             if -3 >= _res >= 3 or _hat >= hat_star:
                 ax.annotate(f'{_i}', (_hat, _res), fontsize=12)
-
-        ax.legend(('Train', 'Validation', 'Test'), loc=(0.7, 0.8))
 
         ax.set_ylim(-6, 6)
         ax.yaxis.set_ticks(np.arange(-6, 7, 1))
