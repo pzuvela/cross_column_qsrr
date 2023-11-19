@@ -25,10 +25,11 @@ jobs:
 
           echo "Running  QSRR test framework"
           
-          ROOT_PATH="$(pwd)/../../"
+          ROOT_PATH="$(pwd)"
+          cd ..
           TEST_PATH="$(echo $ROOT_PATH/tests/)"
 
-          PYTHON_PATH="$TEST_PATH:$ROOT_PATH"
+          PYTHON_PATH="$(echo $TEST_PATH):$(echo $ROOT_PATH)"
           
           if [ -z $PYTHONPATH ]; then
               export PYTHONPATH=$PYTHON_PATH
@@ -38,6 +39,7 @@ jobs:
 
           echo "$(echo $ROOT_PATH)"
           echo "$(echo $TEST_PATH)"
+          echo "$(echo $PYTHON_PATH)"
 
-          coverage run --source "$(ROOT_PATH)". -m pytest -v "$(TEST_PATH)"*
+          coverage run --source "$(echo $ROOT_PATH)". -m pytest -v "$(echo $TEST_PATH)"*
           coverage report -m --omit *test*,*scripts*,*cython_builder*,*__main__*,*de.py*,*notebooks*
