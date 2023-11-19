@@ -26,9 +26,9 @@ jobs:
           echo "Running  QSRR test framework"
           
           ROOT_PATH="$(pwd)/../../"
-          TEST_PATH="$(ROOT_PATH)/tests/"
+          TEST_PATH="$(echo $ROOT_PATH/tests/)"
 
-          PYTHON_PATH="$(TEST_PATH):$(ROOT_PATH)"
+          PYTHON_PATH="$TEST_PATH:$ROOT_PATH"
           
           if [ -z $PYTHONPATH ]; then
               export PYTHONPATH=$PYTHON_PATH
