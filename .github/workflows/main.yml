@@ -28,16 +28,16 @@ jobs:
           ROOT_PATH=$(pwd)/../../
           TEST_PATH=$(ROOT_PATH)/tests/
 
-          echo $ROOT_PATH
-          echo $TEST_PATH
-
-          PYTHON_PATH="$TEST_DIR:$ROOT_PATH"
+          PYTHON_PATH="$TEST_PATH:$ROOT_PATH"
           
           if [ -z $PYTHONPATH ]; then
               export PYTHONPATH=$PYTHON_PATH
           else
               export PYTHONPATH=$PYTHONPATH:$PYTHON_PATH
           fi
+
+          echo $ROOT_PATH
+          echo $TEST_PATH
 
           coverage run --source $ROOT_PATH/. -m py.test -v $TEST_PATH*
           coverage report -m --omit *test*,*scripts*,*cython_builder*,*__main__*,*de.py*,*notebooks*
