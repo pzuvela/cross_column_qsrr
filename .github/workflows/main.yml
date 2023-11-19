@@ -37,4 +37,4 @@ jobs:
           fi
 
           coverage run --source "$ROOT_PATH"/. -m py.test -v $TEST_DIR/tests*
-          coverage report -m --omit *test*,*scripts*,*cython_builder*,*__main__*,*de.py*
+          coverage report -m --omit *test*,*scripts*,*cython_builder*,*__main__*,*de.py*,*notebooks*
