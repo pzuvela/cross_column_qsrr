@@ -22,11 +22,14 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Test with pytest
         run: |
-          cd ./ml_toolbox/tests
-          echo "Running  QSRR test framework"
 
-          TEST_DIR=$(pwd)
+          echo "Running  QSRR test framework"
+          
           ROOT_PATH=$(pwd)/../../
+          TEST_PATH=$(ROOT_PATH)/tests/
+
+          echo $ROOT_PATH
+          echo $TEST_PATH
 
           PYTHON_PATH="$TEST_DIR:$ROOT_PATH"
           
@@ -36,5 +39,5 @@ jobs:
               export PYTHONPATH=$PYTHONPATH:$PYTHON_PATH
           fi
 
-          coverage run --source "$ROOT_PATH"/. -m py.test -v $TEST_DIR/tests*
+          coverage run --source "$ROOT_PATH"/. -m py.test -v $TEST_PATH*
           coverage report -m --omit *test*,*scripts*,*cython_builder*,*__main__*,*de.py*,*notebooks*
