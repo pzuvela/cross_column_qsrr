@@ -25,9 +25,8 @@ jobs:
 
           echo "Running  QSRR test framework"
           
-          ROOT_PATH="$(pwd)"
-          cd ..
-          TEST_PATH="$(echo $ROOT_PATH/tests/)"
+          ROOT_PATH=$(pwd)
+          TEST_PATH=$(echo $ROOT_PATH/tests/)
 
           PYTHON_PATH="$(echo $TEST_PATH):$(echo $ROOT_PATH)"
           
