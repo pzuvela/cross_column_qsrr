@@ -1,0 +1,40 @@
+name: QSRR-Pytest
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container: python
+    strategy:
+        matrix:
+            python-version: ['3.10']
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: export PATH=$PATH:/home/runner/.local/bin/$PATH:$pwd
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Test with pytest
+        run: |
+          cd ./ml_toolbox/tests
+          echo "Running  QSRR test framework"
+
+          TEST_DIR=$(pwd)
+          ROOT_PATH=$(pwd)/../../
+
+          PYTHON_PATH="$TEST_DIR:$ROOT_PATH"
+          
+          if [ -z $PYTHONPATH ]; then
+              export PYTHONPATH=$PYTHON_PATH
+          else
+              export PYTHONPATH=$PYTHONPATH:$PYTHON_PATH
+          fi
+
+          coverage run --source "$ROOT_PATH"/. -m py.test -v $TEST_DIR/tests*
+          coverage report -m --omit *test*,*scripts*,*cython_builder*,*__main__*,*de.py*
