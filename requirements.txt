@@ -106,7 +106,6 @@ pycparser==2.21
 Pygments==2.15.1
 pyparsing==3.0.9
 pytest==7.4.3
-pytest-xdist==3.4.0
 python-dateutil==2.8.2
 python-json-logger==2.0.7
 pytz==2023.3
