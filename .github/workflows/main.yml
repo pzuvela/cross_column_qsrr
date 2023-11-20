@@ -45,5 +45,4 @@ jobs:
             echo "$(echo $TEST_PATH)"
             echo "$(echo $PYTHONPATH)"
             
-            coverage run --source "$(echo $ROOT_PATH)" -m pytest -v "$(echo $TEST_PATH)"
-            coverage report -m --omit='*tests*,*notebooks*,*data*'
+            pytest -v "$(echo $TEST_PATH)"
